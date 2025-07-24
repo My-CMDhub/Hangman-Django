@@ -1,0 +1,8 @@
+#word-state {
+    font-size: 2.5rem;
+    letter-spacing: 0.5rem;
+    font-family: monospace;
+}
+#message {
+    min-height: 2rem;
+} 
