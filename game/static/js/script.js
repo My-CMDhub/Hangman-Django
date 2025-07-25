@@ -51,6 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 gameInfo.style.display = '';
                 wordState.textContent = data.word_state;
                 statusSpan.textContent = data.status;
+                if (data.status === 'Won') {
+                    statusSpan.style.color = 'green';
+                } else if (data.status === 'Lost') {
+                    statusSpan.style.color = 'red';
+                } else {
+                    statusSpan.style.color = 'black'; 
+                }
                 incorrectGuesses.textContent = data.incorrect_guesses;
                 guessesRemaining.textContent = data.incorrect_guesses_remaining;
                 renderGuessedLetters(data.word_state);
@@ -77,7 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             wordState.textContent = data.word_state;
             statusSpan.textContent = data.status;
-            statusSpan.style.color = data.status === 'Won' ? 'green' : data.status === 'Lost' ? 'red' : 'black';
+            if (data.status === 'Won') {
+                statusSpan.style.color = 'green';
+            } else if (data.status === 'Lost') {
+                statusSpan.style.color = 'red';
+            } else {
+                statusSpan.style.color = 'black'; 
+            }
             incorrectGuesses.textContent = data.incorrect_guesses;
             guessesRemaining.textContent = data.incorrect_guesses_remaining;
             messageDiv.textContent = data.message;
@@ -103,4 +116,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    guessInput.addEventListener('input', function(e) {
+        
+        this.value = this.value.replace(/[^a-zA-Z]/g, '');
+    });
+
+    guessInput.addEventListener('keypress', function(e) {
+        if (!/[a-zA-Z]/.test(e.key)) {
+            e.preventDefault();
+        }
+    });
 }); 

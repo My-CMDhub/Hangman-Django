@@ -3,16 +3,16 @@ import random
 
 class Game(models.Model):
     STATUS_CHOICES = [
-        ('InProgress', 'In Progress'),
+        ('In Progress', 'In Progress'),
         ('Won', 'Won'),
         ('Lost', 'Lost'),
     ]
     WORDS = ["Hangman", "Python", "Audacix", "Bottle", "Pen"]
 
-    word = models.CharField(max_length=20)
-    word_state = models.CharField(max_length=20)
+    word = models.CharField(max_length=11)
+    word_state = models.CharField(max_length=11)
     incorrect_guesses = models.IntegerField(default=0)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='InProgress')
+    status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='InProgress')
     created_time = models.DateTimeField(auto_now_add=True)
 
     def __init__(self, *args, **kwargs):
@@ -26,8 +26,10 @@ class Game(models.Model):
 
     def make_guess(self, letter):
         letter = letter.upper()
+
         if self.status != 'InProgress':
             return False, "Game is already finished"
+        
         if letter in self.word.upper():
             new_state = list(self.word_state)
             for i, char in enumerate(self.word.upper()):
@@ -38,6 +40,7 @@ class Game(models.Model):
                 self.status = 'Won'
             self.save()
             return True, "Correct guess!"
+        
         else:
             self.incorrect_guesses += 1
             if self.incorrect_guesses >= len(self.word) // 2:
